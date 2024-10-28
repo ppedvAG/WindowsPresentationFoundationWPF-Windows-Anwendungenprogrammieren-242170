@@ -105,5 +105,29 @@
 		<TextBlock Text="{Binding ElementName=GradeSlider, Path=Value, StringFormat='Punktzahl: {0}'}"/>
 		<TextBlock Text="{Binding ElementName=GradeSlider, Path=Value, Converter={StaticResource SGC}}"
 				   Background="{Binding ElementName=GradeSlider, Path=Value, Converter={StaticResource SCC}}"/>
+		
+		<!--MultiBinding-->
+		<!--Binding mit mehreren Quellen und einem Ziel-->
+		<!--Jedes MultiBinding benötigt einen Converter-->
+		<!--Beispiel: Mehrere Slider zu einem Margin-->
+		<Slider Minimum="0" Maximum="100" Name="LSlider"/>
+		<Slider Minimum="0" Maximum="100" Name="TSlider"/>
+		<Slider Minimum="0" Maximum="100" Name="RSlider"/>
+		<Slider Minimum="0" Maximum="100" Name="BSlider"/>
+		<Button Content="Margin">
+			<Button.Margin>
+				<!--MultiBinding muss in der Langform definiert werden-->
+				<MultiBinding>
+					<Binding ElementName="LSlider" Path="Value"/>
+					<Binding ElementName="TSlider" Path="Value"/>
+					<Binding ElementName="RSlider" Path="Value"/>
+					<Binding ElementName="BSlider" Path="Value"/>
+					<MultiBinding.Converter>
+						<local:FourValueToMarginConverter/>
+					</MultiBinding.Converter>
+				</MultiBinding>
+			</Button.Margin>
+		</Button>
+		<Separator/>
 	</StackPanel>
 </Window>
