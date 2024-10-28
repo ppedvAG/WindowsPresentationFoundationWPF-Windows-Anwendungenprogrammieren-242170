@@ -1,0 +1,109 @@
+﻿<Window x:Class="M004.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:local="clr-namespace:M004"
+        Title="MainWindow" Height="450" Width="800"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<StackPanel>
+		<!--In der Kurzform werden hier Resources benötigt-->
+		<StackPanel.Resources>
+			<BooleanToVisibilityConverter x:Key="BVC"/>
+			<local:ScoreToGradeConverter x:Key="SGC"/>
+			<local:ScoreToColorConverter x:Key="SCC"/>
+		</StackPanel.Resources>
+		
+		<!--Binding-->
+		<!--Verbindung zw. zwei UI-Komponenten-->
+		<!--Wird verwendet, um die UI zu aktualisieren, ohne Backend Code schreiben zu müssen-->
+		
+		<!--Zwei Arten-->
+		<!--Property Binding-->
+		<!--Data Binding-->
+		
+		<!--Aufgabenstellung: Slider Wert in einem TextBlock-->
+		<!--WICHTIG: Bindings werden immer am Ziel definiert-->
+		
+		<!--Was soll gebunden werden?-->
+		<!--Slider.Value -> TextBlock.Text-->
+		<TextBlock>
+			<TextBlock.Text>
+				<!--Binding benötigt immer zwei Komponente: ElementName, Path-->
+				<Binding ElementName="BindingSlider" Path="Value"/>
+			</TextBlock.Text>
+		</TextBlock>
+		<Slider Minimum="0" Maximum="100" Name="BindingSlider"/>
+		
+		<!--Kurzform mit MarkupExtension-->
+		<TextBlock Text="{Binding ElementName=BindingSlider, Path=Value}"/>
+		
+		<!--Binding Mode-->
+		<!--Gibt die Richtung des Bindings an-->
+		<!--OneWay, OneWayToSource, TwoWay-->
+		<!--Standard: Situationsbedingt-->
+
+		<!--Beispiel Slider -> TextBlock: OneWay-->
+		<TextBlock Text="{Binding ElementName=BindingSlider, Path=Value}"
+				   Name="TB"/>
+		<Button Click="Button_Click"
+				Content="Test"/>
+
+		<!--Beispiel: Slider -> TextBox: TwoWay-->
+		<TextBox Text="{Binding ElementName=BindingSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}"/>
+		
+		<!--UpdateSourceTrigger-->
+		<!--Definiert, wann das Binding ausgeführt wird-->
+		<!--LostFocus, PropertyChanged-->
+		<!--Explicit: Muss über den C#-Code ausgeführt werden-->
+		<!--Standard: Situationsbedingt-->
+		
+		<!--StringFormat-->
+		<!--Darstellung des Wertes des Bindings verändern-->
+		<!--WICHTIG: Einzelne Hochkomma verwenden-->
+		
+		<!--Ausgabe runden auf X Kommastellen-->
+		<TextBlock Text="{Binding ElementName=BindingSlider, Path=Value, StringFormat='Zahl: {0:F2}'}"/>
+
+		<!--StringFormat kann auch für Datumswerte verwendet werden-->
+		<DatePicker Name="Dates"/>
+		<TextBlock Text="{Binding ElementName=Dates, Path=SelectedDate, StringFormat='dd.MM.yyyy'}"/>
+
+		<!--Converter-->
+		<!--Übersetzen Werte bei einem Binding in einen anderen Typen-->
+		<!--Double -> string (Text): Nicht kompatibel -> Converter-->
+		<!--Double -> Thickness (Margin): Nicht kompatibel -> Converter-->
+		<Button Content="Hallo" Margin="{Binding ElementName=BindingSlider, Path=Value}"/>
+
+		<!--Beispiel: CheckBox an Visibility binden-->
+		<CheckBox Name="CB"/>
+		<Button Content="Versteckt">
+			<Button.Visibility>
+				<Binding ElementName="CB" Path="IsChecked">
+					<Binding.Converter>
+						<!--Interner Converter-->
+						<BooleanToVisibilityConverter/>
+					</Binding.Converter>
+				</Binding>
+			</Button.Visibility>
+		</Button>
+		
+		<!--Siehe StackPanel.Resources-->
+		<Button Content="Versteckt"
+				Visibility="{Binding ElementName=CB, Path=IsChecked, Converter={StaticResource BVC}}"/>
+		
+		<!--Eigene Converter-->
+		<!--Aufgabenstellung: Slider von 0-100-->
+		<!--Slider soll eine Bewertung repräsentieren, diese soll dem Benutzer mit ein Text und einer Farbe präsentiert werden-->
+		<!--Noten: Sehr Gut, Gut, Befriedigend, Ausreichend, Mangelhaft, Ungenügend-->
+		<!--Hintergrundfarben: Grün, Hellgrün, Gelb, Orange, Dunkelorange, Rot-->
+		<Slider Minimum="0" Maximum="100" Name="GradeSlider"
+				TickFrequency="1"
+				IsSnapToTickEnabled="True"
+				TickPlacement="BottomRight"/>
+		
+		<!--Hier werden zwei Converter benötigt: double -> Text, double -> Farbe-->
+		<TextBlock Text="{Binding ElementName=GradeSlider, Path=Value, StringFormat='Punktzahl: {0}'}"/>
+		<TextBlock Text="{Binding ElementName=GradeSlider, Path=Value, Converter={StaticResource SGC}}"
+				   Background="{Binding ElementName=GradeSlider, Path=Value, Converter={StaticResource SCC}}"/>
+	</StackPanel>
+</Window>
