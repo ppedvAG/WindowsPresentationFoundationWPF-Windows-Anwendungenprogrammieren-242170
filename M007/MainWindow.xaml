@@ -1,0 +1,97 @@
+﻿<Window x:Class="M007.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M007"
+        Title="MainWindow" Height="450" Width="300"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<Window.Resources>
+		<DataTemplate DataType="{x:Type local:Fahrzeug}">
+			<!--Hier können GUI Komponente angelegt werden, die per Bindings die Werte anzeigen-->
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="{Binding MaxV}"/>
+				<TextBlock Text="{Binding Marke}"/>
+			</StackPanel>
+		</DataTemplate>
+		<local:MarkeToImagePathConverter x:Key="MIC"/>
+	</Window.Resources>
+	<StackPanel>
+		<!--Templates-->
+		<!--Zwei verschiedene Typen-->
+		<!--ControlTemplate: Komponente von Grund auf neu designen-->
+		<!--DataTemplate: Darstellung von Daten innerhalb von Listenkomponenten frei bestimmen-->
+
+		<!--ControlTemplate-->
+		<!--Jede Komponente in WPF hat eine Eigenschaft namens Template, diese Eigenschaft kann ein ControlTemplate enthalten-->
+		<!--Ein Style kann nur bestehende Eigenschaften beeinflussen, ein Template kann neue Komponente hinzufügen-->
+		<Button Content="Hallo"
+				BorderBrush="Aqua"
+				BorderThickness="2"
+				Background="LightGreen">
+			<Button.Template>
+				<!--WICHTIG: TargetType nicht vergessen-->
+				<ControlTemplate TargetType="Button">
+					<!--Hier können beliebige GUI Komponente angelegt werden, welche in dem Button gezeichnet werden-->
+					<Border BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}">
+						<!--TemplateBinding: Properties, welche oben gesetzt werden, im Template einsetzen-->
+						<CheckBox Content="{TemplateBinding Content}"
+								  HorizontalAlignment="Center"/>
+					</Border>
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+
+		<!--DataTemplate-->
+		<!--Wird in Listenkomponenten verwendet, um die Darstellung der Daten zu verändern-->
+
+		<!--Beispiel: Werte der Fahrzeuge sichtbar machen-->
+		<ListBox ItemsSource="{Binding Fahrzeuge}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<!--Hier können GUI Komponente angelegt werden, die per Bindings die Werte anzeigen-->
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding MaxV}"/>
+						<TextBlock Text="{Binding Marke}"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<!--ItemsPanelTemplate-->
+		<!--Gibt den Container einer Listenkomponente an-->
+		<ListBox ItemsSource="{Binding Fahrzeuge}">
+			<!--Hier das ItemsPanelTemplate definieren-->
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<UniformGrid Columns="3"/>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
+
+		<!--Globales DataTemplate-->
+		<!--Wenn ein DataTemplate als Resource angelegt wird, wird dieses wie ein globaler Style behandelt-->
+		<!--WICHTIG: DataType muss angegeben werden in der Form {x:Type ...}-->
+		<!--siehe Window.Resources-->
+
+		<!--Beispiel: Schöne Darstellung der Fahrzeuge-->
+		<ListBox ItemsSource="{Binding Fahrzeuge}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<!--Hier muss der EnumTyp zu einer ImageSource übersetzt werden-->
+						<Image Source="{Binding Marke, Converter={StaticResource MIC}}"
+							   Height="50" Width="100"/>
+						<Line X1="0" X2="0" Y1="0" Y2="50" StrokeThickness="1" Stroke="Black" Margin="10, 0"/>
+						<Image Source="C:\Users\lk3\source\repos\WPF_2024_10_14\M007\Images\velocity.png" Height="50"/>
+						<TextBlock Text="{Binding MaxV, StringFormat='\{0}km/h'}"
+								   FontSize="30" VerticalAlignment="Center"
+								   Margin="10, 0"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</StackPanel>
+</Window>
