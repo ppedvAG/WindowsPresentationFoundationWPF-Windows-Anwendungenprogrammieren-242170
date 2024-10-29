@@ -1,0 +1,40 @@
+﻿<Window x:Class="M005.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M005"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="800"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+    <StackPanel>
+		<!--DataBinding-->
+		<!--Binding zw. einer GUI Komponente und einem Property im Backend-->
+		<!--Sieht aus wie ein normales Binding, hat aber kein ElementName-->
+		<!--Benötigt einen DataContext und INotifyPropertyChanged-->
+		
+		<!--DataContext-->
+		<!--Beschreibt dem XAML, welche Daten wir haben, und wie diese per Binding eingebunden werden können-->
+		<!--Zwei Optionen: Ein Objekt befüllen (der Zähler selbst), das ganze Window als DataContext-->
+		<!--DataContext="{Binding RelativeSource={RelativeSource Self}}"-->
+		<!--(Im Konstruktor im Backend) this.DataContext = this;-->
+		
+		<!--INotifyPropertyChanged-->
+		<!--Mechanismus, welcher der GUI Benachrichtigungen über Änderungen im Backend senden kann-->
+		<!--Wenn eine Benachrichtigung kommt, wird die Änderung in der GUI angezeigt-->
+		<!--Implementation siehe Backend-->
+		
+		<!--Aufgabenstellung: Zähler bauen, welcher per Buttonclick hochzählt-->
+		<!--1. Binding auf die Zählervariable-->
+		<!--2. DataContext setzen-->
+		<!--3. INotifyPropertyChanged-->
+		<TextBlock Text="{Binding Path=Counter}"/>
+		<Button Click="Button_Click" Content="Zähler + 1"/>
+		
+		<!--ObservableCollection-->
+		<!--Liste, welche den Benachrichtigungsmechanismus implementiert hat (INotifyCollectionChanged)-->
+		<ListBox ItemsSource="{Binding Fahrzeuge}"/>
+
+		<!--Mit . kann bei Binding auch in die entsprechenden Objekte hineingegriffen werden-->
+		<TextBlock Text="{Binding Fzg.MaxV}"/>
+	</StackPanel>
+</Window>
