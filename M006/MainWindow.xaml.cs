@@ -9,19 +9,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace M000;
+namespace M006;
 
 public partial class MainWindow : Window
 {
-	public Person DiePerson { get; set; } = new Person();
-
 	public MainWindow()
 	{
 		InitializeComponent();
-	}
-
-	private void Button_Click(object sender, RoutedEventArgs e)
-	{
-
 	}
 }

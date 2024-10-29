@@ -1,0 +1,68 @@
+﻿<Window x:Class="M006.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M006"
+		xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="800"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True"
+		
+		Background="{StaticResource DefaultBackground}"
+		Foreground="{StaticResource DefaultForeground}">
+	<Window.Resources>
+		<sys:String x:Key="HelloWorldText">Hello World</sys:String>
+		<sys:Double x:Key="GlobalFontSize">30</sys:Double>
+		<SolidColorBrush Color="Aqua" x:Key="DefaultBackground"/>
+
+		<!--Jeder Button im Window bekommt jetzt diesen Style-->
+		<!--WICHTIG: Globale Styles dürfen keinen Key haben-->
+		<Style TargetType="Button">
+			<Setter Property="FontSize" Value="20"/>
+			<Setter Property="Background" Value="LightGreen"/>
+			<Setter Property="BorderThickness" Value="3"/>
+			<Setter Property="BorderBrush" Value="Black"/>
+			<Setter Property="Padding" Value="5"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+		</Style>
+	</Window.Resources>
+    <StackPanel>
+		<!--Resources-->
+		<!--Objekte im XAML ablegen und diese per Key in eine UI Komponente einbinden-->
+		<!--Wird generell für Converter, Validierungsregeln und Styles-->
+		<!--Jede Resource benötigt einen Key (außer Styles)-->
+		
+		<!--Über StaticResource kann eine Resource per Key angegriffen werden-->
+		<TextBlock FontSize="{StaticResource GlobalFontSize}"
+				   Text="{StaticResource HelloWorldText}"
+				   Background="{StaticResource DefaultBackground}"/>
+		
+		<!--DynamicResource-->
+		<!--Eine Resource, welche Veränderungen mitbekommt-->
+		<!--StaticResource verändert sich nicht, wenn sich die unterliegende Resource verändert-->
+		
+		<!--Binding auf eine Resource-->
+		<Slider Minimum="10" Maximum="100" Value="{Binding Resources[GlobalFontSize]}"/>
+		<TextBlock FontSize="{DynamicResource GlobalFontSize}"
+				   Text="{StaticResource HelloWorldText}"
+				   Background="{StaticResource DefaultBackground}"/>
+		<!--Schriftgröße verändert sich, wenn der Slider verändert wird-->
+		
+		<!--x:Static-->
+		<!--Statischer Zugriff auf static Properties in diversen Klassen (und u.a. Enums)-->
+		<DatePicker SelectedDate="{x:Static sys:DateTime.Now}"/>
+		
+		<!--ResourceDictionary-->
+		<!--Resourcen in einer eigenen Datei ablegen-->
+		<!--siehe Extern.xaml-->
+		
+		<!--Styles-->
+		<!--Allgemeingültige Properties global setzen-->
+		<!--Benötigen immer einen TargetType, und enthalten Setter, welche die Properties definieren-->
+		<!--Styles werden sehr oft in Resources definiert und auch in externen ResourceDictionaries-->
+		<Button Content="Hallo Style"/>
+
+		<!--Dieser Button bekommt auch den Style-->
+		<Button Content="Test"/>
+	</StackPanel>
+</Window>

@@ -1,0 +1,19 @@
+﻿<Application x:Class="M006.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:M006"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!--Externe ResourceDictionaries müssen in App.xaml eingebunden werden-->
+		<!--Wenn mehrere RDs eingebunden werden sollen, muss MergedDictionaries verwendet werden-->
+		<!--<ResourceDictionary Source="Extern.xaml"/>-->
+
+		<!--Mehrere RDs einbinden-->
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Extern.xaml"/>
+				<ResourceDictionary Source="/PresentationFramework.Classic;component/themes/Classic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>
