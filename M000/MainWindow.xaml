@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:M000"
+		xmlns:valid="clr-namespace:M000.Validation"
         Title="MainWindow" Height="450" Width="300"
 		DataContext="{Binding RelativeSource={RelativeSource Self}}"
 		WindowStartupLocation="CenterScreen"
@@ -11,23 +12,76 @@
 		Style="{StaticResource WindowStyle}">
 	<Window.Resources>
 		<local:BooleanToGenderConverter x:Key="BGC"/>
+		<ControlTemplate x:Key="ErrorTemp">
+			<StackPanel>
+				<Border BorderBrush="Red" BorderThickness="3">
+					<!--AdornedElementPlaceholder: Das Element, welches gerade Validiert wird-->
+					<!--z.B. TextBox, DatePicker, ...-->
+					<AdornedElementPlaceholder Name="AEP"/>
+				</Border>
+				<!--Fehlermeldung anzeigen-->
+				<!--Text muss hier ein Binding enthalten auf das AdornedElement-->
+				<!--Das AdornedElement enthält die Fehlermeldung-->
+				<Popup IsOpen="{Binding ElementName=AEP, Path=AdornedElement.IsMouseOver, Mode=OneWay}"
+					   Placement="Mouse">
+					<TextBlock Background="Red" FontSize="14" Foreground="White" Padding="3"
+						   Text="{Binding ElementName=AEP, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+				</Popup>
+			</StackPanel>
+		</ControlTemplate>
 	</Window.Resources>
     <StackPanel Margin="5, 0, 5, 5">
 		<UniformGrid>
 			<TextBlock Text="Vorname: "/>
-			<TextBox Text="{Binding DiePerson.Vorname}"/>
+			<TextBox Validation.ErrorTemplate="{StaticResource ErrorTemp}">
+				<TextBox.Text>
+					<Binding Path="DiePerson.Vorname" UpdateSourceTrigger="PropertyChanged">
+						<Binding.ValidationRules>
+							<valid:LengthValidation ValidatesOnTargetUpdated="True"/>
+							<valid:LetterValidation ValidatesOnTargetUpdated="True"/>
+						</Binding.ValidationRules>
+					</Binding>
+				</TextBox.Text>
+			</TextBox>
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Nachname: "/>
-			<TextBox Text="{Binding DiePerson.Nachname}"/>
+			<TextBox Validation.ErrorTemplate="{StaticResource ErrorTemp}">
+				<TextBox.Text>
+					<Binding Path="DiePerson.Nachname" UpdateSourceTrigger="PropertyChanged">
+						<Binding.ValidationRules>
+							<valid:LengthValidation ValidatesOnTargetUpdated="True"/>
+							<valid:LetterValidation ValidatesOnTargetUpdated="True"/>
+						</Binding.ValidationRules>
+					</Binding>
+				</TextBox.Text>
+			</TextBox>
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Geburtsdatum: "/>
-			<DatePicker SelectedDate="{Binding DiePerson.GebDat}"/>
+			<DatePicker Validation.ErrorTemplate="{StaticResource ErrorTemp}">
+				<DatePicker.SelectedDate>
+					<Binding Path="DiePerson.GebDat" UpdateSourceTrigger="PropertyChanged">
+						<Binding.ValidationRules>
+							<valid:DateValidation ValidatesOnTargetUpdated="True"/>
+						</Binding.ValidationRules>
+					</Binding>
+				</DatePicker.SelectedDate>
+			</DatePicker>
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Lieblingsfarbe: "/>
-			<ComboBox ItemsSource="{local:Colors}">
+			<ComboBox ItemsSource="{local:Colors}"
+					  Validation.ErrorTemplate="{StaticResource ErrorTemp}"
+					  SelectedValuePath="Color">
+				<ComboBox.SelectedValue>
+					<Binding Path="DiePerson.Lieblingsfarbe" UpdateSourceTrigger="PropertyChanged">
+						<Binding.ValidationRules>
+							<valid:ColorValidation ValidatesOnTargetUpdated="True"/>
+						</Binding.ValidationRules>
+					</Binding>
+				</ComboBox.SelectedValue>
+				
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal">

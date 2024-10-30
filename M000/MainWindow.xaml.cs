@@ -20,19 +20,6 @@ public partial class MainWindow : Window
 
 	public MainWindow()
 	{
-		Type c = typeof(Colors); //Typ der Colors Klasse entnehmen
-		PropertyInfo[] p = c.GetProperties(); //Array mit allen Properties der Klasse erzeugen
-		//Color[] colors = new Color[p.Length];
-		//for (int i = 0; i < p.Length; i++)
-		//{
-		//	colors[i] = (Color) p[i].GetValue(null); //Aus dem jetztigen Property die Farbe entnehmen
-		//}
-		string[] names = new string[p.Length];
-		for (int i = 0; i < p.Length; i++)
-		{
-			names[i] = p[i].Name;
-		}
-		Colors = names;
 		InitializeComponent();
 	}
 

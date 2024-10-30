@@ -5,7 +5,7 @@ namespace M000;
 
 public class Person : INotifyPropertyChanged
 {
-	private string vorname;
+	private string vorname = string.Empty;
 
 	public string Vorname
 	{
@@ -17,7 +17,7 @@ public class Person : INotifyPropertyChanged
 		}
 	}
 
-	private string nachname;
+	private string nachname = string.Empty;
 
 	public string Nachname
 	{
