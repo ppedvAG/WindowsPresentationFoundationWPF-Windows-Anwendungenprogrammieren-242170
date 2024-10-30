@@ -1,17 +1,19 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Media;
 
-namespace M000;
+namespace M011;
 
-public class BooleanToGenderConverter : IValueConverter
+public class ColorToBrushConverter : IValueConverter
 {
 	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 	{
-		return (Geschlecht) value == (Geschlecht) parameter;
+		Color c = (Color)value;
+		return new SolidColorBrush(c);
 	}
 
 	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 	{
-		return (bool) value ? (Geschlecht) parameter : Binding.DoNothing;
+		throw new NotImplementedException();
 	}
 }

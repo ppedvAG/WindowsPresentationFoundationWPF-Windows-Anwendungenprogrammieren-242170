@@ -1,0 +1,25 @@
+﻿<Window x:Class="M011.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M011"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="300"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<StackPanel Margin="5">
+		<!--UserControls-->
+		<!--Eigene WPF Komponente entwickeln-->
+		<!--Alternative: Bestehende Views verschachteln (keine eigenen Controls, sondern Aufteilung des Windows in mehrere Files)-->
+
+		<!--DependencyProperty-->
+		<!--Wird verwendet, um Bindings zu ermöglichen-->
+		
+		<!--Beispiel: ColorPicker als UserControl-->
+		<Button Content="Hallo" Click="Button_Click"/>
+		<local:ColorPickerUC PickedColor="{Binding SelectedColor, Mode=TwoWay}"
+							 x:Name="APicker"/>
+		<Border BorderBrush="Aqua" BorderThickness="2">
+			<TextBlock Text="Hallo Welt"/>
+		</Border>
+	</StackPanel>
+</Window>
