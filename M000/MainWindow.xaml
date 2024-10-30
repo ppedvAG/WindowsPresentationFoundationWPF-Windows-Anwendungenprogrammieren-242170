@@ -27,11 +27,23 @@
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Lieblingsfarbe: "/>
-			<ComboBox>
-				<ComboBoxItem Content="Rot" Foreground="Red"/>
+			<ComboBox ItemsSource="{local:Colors}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal">
+							<Rectangle Width="20" Height="20" Fill="{Binding Brush}"
+									   Stroke="Black"/>
+							<TextBlock Text="{Binding Name}"
+									   Margin="5, 0, 0, 0"/>
+							<TextBlock Text="{Binding HexCode, StringFormat='({0})'}"
+									   Margin="5, 0, 0, 0"/>
+						</StackPanel>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+				<!--<ComboBoxItem Content="Rot" Foreground="Red"/>
 				<ComboBoxItem Content="Grün" Foreground="Green"/>
 				<ComboBoxItem Content="Blau" Foreground="Blue"/>
-				<ComboBoxItem Content="Geld" Foreground="Yellow"/>
+				<ComboBoxItem Content="Geld" Foreground="Yellow"/>-->
 			</ComboBox>
 		</UniformGrid>
 		<UniformGrid>

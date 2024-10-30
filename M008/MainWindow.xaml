@@ -1,0 +1,78 @@
+﻿<Window x:Class="M008.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:local="clr-namespace:M008"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="800"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+    <StackPanel>
+		<!--MarkupExtension-->
+		<!--Code im XAML zw. { }-->
+		<!--Beispiel: Binding, StaticResource, TemplateBinding, ...-->
+		
+		<!--Problem: Enum an ComboBox anbinden-->
+		<!--Lösung 1: Enum Array im Backend, welches per Binding angebunden wird-->
+		<!--Nachteil: In großen Projekten ist das Backend mit Enumvariablen zugemüllt-->
+		<ComboBox ItemsSource="{Binding Wochentage}"/>
+
+		<!--Lösung 2: Eigene MarkupExtension (keine interne Lösung in WPF)-->
+		<ComboBox ItemsSource="{local:Enum EnumType=sys:DayOfWeek}"/>
+		<ComboBox ItemsSource="{local:Enum EnumType=sys:StringComparison}"/>
+		<ComboBox ItemsSource="{local:Enum EnumType=local:Geschlecht}"/>
+
+		<!--Converter per MarkupExtension-->
+		<!--Converter muss hier nicht mehr als Resource angelegt werden, sondern wird von der MarkupExtension selbst erzeugt und in die GUI eingesetzt-->
+		<CheckBox Name="CB"/>
+		<Button Visibility="{Binding ElementName=CB, Path=IsChecked, Converter={local:Converter ConverterType=BooleanToVisibilityConverter}}"/>
+		
+		<!--RelativeSources-->
+		<!--Bindung, bei der zur Editorzeit nicht klar ist, was das Ziel ist-->
+		
+		<!--Self-->
+		<Slider Minimum="10" Maximum="100" Value="10" Name="WSlider"/>
+		<Rectangle Width="{Binding ElementName=WSlider, Path=Value}"
+				   Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
+				   Fill="Aqua" Stroke="Black" StrokeThickness="2"/>
+		
+		<!--TemplatedParent-->
+		<!--Langform von TemplateBinding-->
+		<Button Content="Hallo" BorderBrush="Aqua" BorderThickness="2" Background="LightGreen">
+			<Button.Template>
+				<ControlTemplate TargetType="Button">
+					<!--TemplatedParent == TemplateBinding-->
+					<Border BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=BorderThickness}">
+						<CheckBox Content="{TemplateBinding Content}" HorizontalAlignment="Center"/>
+					</Border>
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+		
+		<!--FindAncestor-->
+		<!--Sucht nach einem GUI Element in der XAML Hierarchie, und bindet darauf-->
+		<Grid Background="Aqua" Height="100">
+			<Grid Background="Orange" Height="75">
+				<Grid Background="LightGreen" Height="50">
+					<Button Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=Grid}, Path=Background}"
+							Height="25"/>
+				</Grid>
+			</Grid>
+		</Grid>
+		
+		<!--PreviousData-->
+		<!--Kann nur in Listenkomponenten verwendet werden-->
+		<!--Bietet Zugriff auf das vorherige Listenelement-->
+		<ListBox ItemsSource="{Binding Zahlen}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding ., StringFormat='Die Zahl selbst: {0}'}" Margin="0, 0, 5, 0"/>
+						<TextBlock Text="{Binding RelativeSource={RelativeSource Mode=PreviousData}, StringFormat='Vorherige Zahl: {0}'}"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</StackPanel>
+</Window>

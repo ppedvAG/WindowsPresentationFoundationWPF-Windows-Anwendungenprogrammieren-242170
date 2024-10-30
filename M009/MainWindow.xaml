@@ -1,0 +1,70 @@
+﻿<Window x:Class="M009.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M009"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="800"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<Window.Resources>
+		<ControlTemplate x:Key="ErrorTemp">
+			<StackPanel>
+				<Border BorderBrush="Aqua" BorderThickness="3">
+					<!--AdornedElementPlaceholder: Das Element, welches gerade Validiert wird-->
+					<!--z.B. TextBox, DatePicker, ...-->
+					<AdornedElementPlaceholder Name="AEP"/>
+				</Border>
+				<!--Fehlermeldung anzeigen-->
+				<!--Text muss hier ein Binding enthalten auf das AdornedElement-->
+				<!--Das AdornedElement enthält die Fehlermeldung-->
+				<Popup IsOpen="{Binding ElementName=AEP, Path=AdornedElement.IsMouseOver, Mode=OneWay}"
+					   Placement="Mouse">
+					<TextBlock Background="Red" FontSize="14" Foreground="White" Padding="3"
+						   Text="{Binding ElementName=AEP, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+				</Popup>
+			</StackPanel>
+		</ControlTemplate>
+	</Window.Resources>
+    <StackPanel Margin="5">
+		<!--Validierung-->
+		<!--Usereingaben vor dem Binding prüfen-->
+		
+		<!--Drei Möglichkeiten: ValidationRules, ValidateOnException, ValidateOnDataError-->
+		
+		<!--ValidationRules-->
+		<!--Eigene Klassen, welche die Logik zur Prüfung des Wertes enthalten-->
+		<!--Aufgabenstellung: TextBox, welche nur Zahlen von 0 bis 100 erlauben soll-->
+		
+		<!--Rules benötigen die Langform-->
+		<TextBox Validation.ErrorTemplate="{StaticResource ErrorTemp}">
+			<TextBox.Text>
+				<Binding Path="Counter" UpdateSourceTrigger="PropertyChanged">
+					<Binding.ValidationRules>
+						<!--ValidatesOnTargetUpdated: Validierung auch bei Änderungen des Ziels durchführen-->
+						<!--Wird verwendet um die Validierung beim Start der Anwendung durchzuführen-->
+						<local:RangeValidation ValidatesOnTargetUpdated="True"/>
+					</Binding.ValidationRules>
+				</Binding>
+			</TextBox.Text>
+		</TextBox>
+		<Button Content="Test" Click="Button_Click"/>
+		
+		<!--Fehlermeldung ist nicht sichtbar -> ErrorTemplate-->
+		
+		<!--ErrorTemplate-->
+		<!--ControlTemplate, welches in die Komponente eingebunden wird-->
+		<!--Validation.ErrorTemplate={StaticResource ...}-->
+		<!--siehe Window.Resources-->
+		
+		<!--ValidateOnException-->
+		<!--Validiert, wenn das Property eine Exception wirft-->
+		<!--Muss aktiviert werden mittels ValidateOnException=True beim Binding-->
+		<TextBox Text="{Binding Vorname, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+				 Validation.ErrorTemplate="{StaticResource ErrorTemp}"/>
+		
+		<!--ValidateOnDataError-->
+		<!--Siehe Backend-->
+		<TextBox Text="{Binding Nachname, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+				 Validation.ErrorTemplate="{StaticResource ErrorTemp}"/>
+	</StackPanel>
+</Window>
