@@ -1,0 +1,21 @@
+﻿<Window x:Class="M014.View.MVVMToolkit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="clr-namespace:M014.ViewModel"
+        xmlns:local="clr-namespace:M014.View"
+		WindowStartupLocation="CenterScreen"
+        Title="MVVMToolkit" 
+		Height="450"
+		Width="300">
+	<Window.DataContext>
+		<vm:MVVMToolkitViewModel/>
+	</Window.DataContext>
+    <StackPanel>
+        <!--MVVM Toolkit-->
+		<!--Bietet Attribute, um INotifyPropertyChanged und Commands zu automatisieren-->
+	
+		<!--Aufgabenstellungen: Button mit Zähler-->
+		<TextBlock Text="{Binding Counter}"/>
+		<Button Content="Counter++" Command="{Binding CounterIncrementCommand}"/>
+	</StackPanel>
+</Window>

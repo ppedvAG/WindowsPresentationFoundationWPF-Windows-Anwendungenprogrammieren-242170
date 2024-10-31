@@ -1,0 +1,27 @@
+﻿<Window x:Class="M013.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M013"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="800"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True"
+		Name="Self">
+    <StackPanel>
+		<!--Commands-->
+		<!--Logik/Programmcode in Objekten ablegen-->
+		<!--Grund: Keine Events mehr verwenden -> MVVM-->
+		
+		<!--Button verwendet jetzt nicht mehr Click, sondern Command-->
+		<!--Hier wird ein Binding angelegt, welches auf ein Objekt vom Typ ICommand zeigt-->
+		<!--Über das CommandParameter Property, können an das Command beliebige Daten mitgegeben werden-->
+		<Button Command="{Binding Exit}"
+				CommandParameter="{Binding ElementName=Self}"
+				Content="Programm beenden"/>
+
+		<!--Zähler mit MVVM-->
+		<TextBlock Text="{Binding Counter}"/>
+		<Button Command="{Binding CounterCommand}"
+				Content="Counter++"/>
+	</StackPanel>
+</Window>
