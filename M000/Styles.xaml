@@ -20,4 +20,8 @@
 	<Style TargetType="RadioButton">
 		<Setter Property="GroupName" Value="Gender"/>
 	</Style>
+
+	<Style TargetType="TextBlock">
+		<Setter Property="VerticalAlignment" Value="Center"/>
+	</Style>
 </ResourceDictionary>

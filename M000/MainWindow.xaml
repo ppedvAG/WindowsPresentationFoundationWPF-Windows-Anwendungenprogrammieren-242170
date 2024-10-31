@@ -120,6 +120,10 @@
 							 IsChecked="{Binding DiePerson.Geschlecht, Converter={StaticResource BGC}, ConverterParameter={x:Static local:Geschlecht.D}}"/>
 			</StackPanel>
 		</UniformGrid>
+		<UniformGrid>
+			<TextBlock Text="Anzahl Kinder: "/>
+			<local:IntegerUpDown Value="{Binding DiePerson.AnzKinder, Mode=TwoWay}"/>
+		</UniformGrid>
 		<UniformGrid Margin="100, 5, 0, 0">
 			<Button Content="Abbrechen" Margin="0, 0, 2.5, 0"/>
 			<Button Content="OK" Margin="2.5, 0, 0, 0" Click="Button_Click">
